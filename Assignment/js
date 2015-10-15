@@ -1,0 +1,82 @@
+// This will be the javascript file to hold all of the code
+// for my first app
+
+//create the angular module
+angular.module('app', ['ionic'])
+	.service('MyDataService', function ($q) {
+        // CODE GOES HERE
+        var items = [];
+
+        items.push ({"action": "twitter", "name": "@SydViciousx"});
+		items.push ({"action": "instagram", "name": "sydviciousx"});
+		items.push ({"action": "facebook", "name": "Syd Satt"});
+        // these are functions exposed to public
+        return {
+            /**
+            * returns all of the data
+            */
+            getAllItems: function () {
+                var deferred = $q.defer();
+                setTimeout(function () {
+                    deferred.resolve(items);
+                }, 500);
+                return deferred.promise;
+            },
+            /**
+            * Gets item by specific id
+            * @param   {Number}  _itemId index in the array
+            * @returns {Promise}
+            */
+            getItemById: function (_itemId) {
+                var deferred = $q.defer();
+                setTimeout(function () {
+                    deferred.resolve(items[_itemId]);
+                }, 1000);
+                return deferred.promise;
+            },
+            /**
+             * Gets item by specific id
+             * @param   {Number}  _itemId index in the array
+             * @returns {Promise}
+             */
+             getItemById: function (_itemId) {
+                var deferred = $q.defer();
+                setTimeout(function () {
+                    deferred.resolve(items[_itemId]);
+                }, 1000);
+                return deferred.promise;
+            }
+          }
+    })
+	.controller("C-One", function($scope, MyDataService){
+
+
+//This variable is visible to the html file
+
+	$scope.items = [];
+
+//adds to the itemsList variable with data to be displayed 
+//you still have to call the function you define here on the page
+
+		
+	 // this function is exposed to view
+
+    $scope.getOneItemBtnClicked = function () {
+            var objectId = prompt("Please enter object ID", "");
+            if (objectId != null) {
+                MyDataService.getItemById(objectId).then(function (_data) {
+                    $scope.items = [_data];
+                });
+            }
+        }
+
+        $scope.getAllItemsBtnClicked = function () {
+            MyDataService.getAllItems().then(function (_data) {
+                $scope.items = _data;
+            });
+        }
+
+        MyDataService.getAllItems().then(function (_data) {
+            $scope.items = _data;
+        });
+});
